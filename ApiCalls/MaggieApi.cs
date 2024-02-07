@@ -12,6 +12,7 @@ namespace RareServer.ApiCalls
             {
                 return Results.Ok(TagsData.tags);
             });
+
             // getAllPostsTags
             // updateTag
             // createTag
@@ -20,7 +21,8 @@ namespace RareServer.ApiCalls
                 newTag.Id = TagsData.tags.Count + 1;
                 TagsData.tags.Add(newTag);
                 return Results.Ok(newTag);
-                });
+            });
+
             // deleteTag
             app.MapDelete("/tags/{id}", (int id) =>
             {
