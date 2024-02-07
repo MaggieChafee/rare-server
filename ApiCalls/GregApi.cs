@@ -12,7 +12,7 @@ namespace RareServer.ApiCalls
                 return UserList.users;
             });
 
-            app.MapGet("rare/user/${id}", (int id) =>
+            app.MapGet("rare/user/{id}", (int id) =>
             {
                 Users user = UserList.users.FirstOrDefault(u => u.Id == id);
                 if (user == null)
