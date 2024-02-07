@@ -20,8 +20,13 @@ namespace RareServer.ApiCalls
                     return Results.NotFound();
                 }
                 return Results.Ok(user);
-            }
-            );
+            });
+
+            app.MapGet("/posts/{id}", (int postId) =>
+            {
+                Comments
+            });
+            
         }
     }
 }
