@@ -1,17 +1,26 @@
 using RareServer.ApiCalls;
+using RareServer.Models;
+
+List<Subscriptions> subscriptions = new()
+{
+    new Subscriptions()
+    {
+        Id = 1,
+        FollowerId = 1,
+        AuthorId = 1,
+        CreatedOn = new DateTime(2024, 02, 03)
+    }
+};
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -23,5 +32,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 GregApi.Map(app);
+RyanApi.Map(app);
+
 app.Run();
