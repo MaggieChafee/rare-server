@@ -17,14 +17,19 @@ namespace RareServer.ApiCalls
                 Users user = UserList.users.FirstOrDefault(u => u.Id == id);
                 if (user == null)
                 {
-                    return Results.NotFound();
+                    return Results.NotFound("There are no users that match the Id given.");
                 }
                 return Results.Ok(user);
             });
 
-            app.MapGet("/posts/{id}", (int postId) =>
+            app.MapGet("/posts/{id}", (int idOfPost) =>
             {
-                Comments
+               List<Comments> postsComments = CommentList.comments.Where(c => c.PostId == idOfPost).ToList();
+                if (postsComments == null)
+                {
+                    return Results.NotFound("This post has no comments on it yet.");
+                }    
+                return Results.Ok(postsComments);
             });
             
         }
