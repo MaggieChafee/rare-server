@@ -1,4 +1,5 @@
 ﻿using RareServer.Models;
+using System.Xml.Linq;
 
 
 namespace RareServer.ApiCalls
@@ -31,7 +32,17 @@ namespace RareServer.ApiCalls
                 }    
                 return Results.Ok(postsComments);
             });
-            
+
+            app.MapDelete("/posts/${id}", (int idOfComment) =>
+            {
+                Comments commentToDelete = CommentList.comments.Where(c => c.Id == idOfComment).FirstOrDefault();
+                if(commentToDelete == null)
+                {
+                    return Results.NotFound("There was an issue deleting this comment.");
+                }
+                CommentList.comments.Remove(commentToDelete);
+            });
+
         }
     }
 }
