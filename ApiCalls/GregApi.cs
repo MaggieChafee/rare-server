@@ -7,12 +7,12 @@ namespace RareServer.ApiCalls
     {
         public static void Map(WebApplication app)
         {
-            app.MapGet("rare/user", () =>
+            app.MapGet("/user", () =>
             {
                 return UserList.users;
             });
 
-            app.MapGet("rare/user/{id}", (int id) =>
+            app.MapGet("/user/{id}", (int id) =>
             {
                 Users user = UserList.users.FirstOrDefault(u => u.Id == id);
                 if (user == null)
