@@ -11,7 +11,7 @@ namespace RareServer.Models
         public string Password { get; set; }
         public string ProfileImageUrl { get; set; }
         public DateTime CreatedOn { get; set; }
-        public Bool Active { get; set; }
+        public bool Active { get; set; }
     }
 }
 
