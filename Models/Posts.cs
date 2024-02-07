@@ -1,6 +1,6 @@
 namespace RareServer.Models
 {
-    public class Users
+    public class Posts
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -9,6 +9,6 @@ namespace RareServer.Models
         public DateTime PublicationDate { get; set; }
         public string ImageUrl { get; set; }
         public string Content { get; set; }
-        public Bool Approved { get; set; }
+        public bool Approved { get; set; }
     }
 }
