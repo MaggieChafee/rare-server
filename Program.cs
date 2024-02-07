@@ -1,16 +1,4 @@
 using RareServer.ApiCalls;
-using RareServer.Models;
-
-List<Subscriptions> subscriptions = new()
-{
-    new Subscriptions()
-    {
-        Id = 1,
-        FollowerId = 1,
-        AuthorId = 1,
-        CreatedOn = new DateTime(2024, 02, 03)
-    }
-};
 
 var builder = WebApplication.CreateBuilder(args);
 
