@@ -6,34 +6,36 @@ namespace RareServer.ApiCalls
     {
         public static void Map(WebApplication app)
         {
+            // Subscribe API Calls
             app.MapGet("/user/{id}/subscriptions", (int id) =>
             {
-                var userSubscriptions = Subscription.subscriptions.Where(s => s.FollowerId == id);
+                var userSubscriptions = Subscription.subscriptions.Where(s => id == s.FollowerId).ToList();
 
-                return Results.Ok(Subscription.subscriptions);
+                return Results.Ok(userSubscriptions);
             });
-
-            app.MapPost("/user/{id}/subscribe", (int id) =>
+            // Author         // Follower
+            app.MapPost("/user/{id}/subscribe/{uid}", (int id, int uid) =>
             {
-                Subscriptions subscribe = Subscription.subscriptions.FirstOrDefault(s => s.Id == id);
-                subscribe.AuthorId = id;
-                subscribe.CreatedOn = DateTime.Today;
+                var user = UserList.users.FirstOrDefault(u => u.Id == uid).Id;
+                Subscriptions subscribe = Subscription.subscriptions.FirstOrDefault(s => s.AuthorId == id);
+
                 subscribe.Id = Subscription.subscriptions.Max(s => s.Id) + 1;
+                subscribe.AuthorId = id;
+                subscribe.FollowerId = user;
+                subscribe.CreatedOn = DateTime.Today;
 
-                Subscription.subscriptions.Add(subscribe);
-
-                return Results.Ok(Subscription.subscriptions);
+                return Results.Ok();
             });
 
-            app.MapDelete("/user/{uid}/subscriptions/{id}", (int uid, int id) => 
+            app.MapDelete("/subscriptions/{id}/unsubscribe", (int id) =>
             {
-                var userUnsubscribe = UserList.users
-                    .FirstOrDefault(u => u.Id == uid);
-                var unsubscribe = Subscription.subscriptions.FirstOrDefault(s => s.Id == id);
+                Subscriptions unsubscribe = Subscription.subscriptions.FirstOrDefault(s => s.Id == id);
                 Subscription.subscriptions.Remove(unsubscribe);
 
                 return Results.Ok();
             });
+
+            // Categories API Calls
         }
     }
 }
