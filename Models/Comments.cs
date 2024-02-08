@@ -6,5 +6,6 @@ namespace RareServer.Models
         public int AuthorId { get; set; }
         public int PostId { get; set; }
         public string Content { get; set; }
+        public Users User { get; set; }
     }
 }
