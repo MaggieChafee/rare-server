@@ -1,5 +1,4 @@
 ﻿using RareServer.Models;
-using System.Xml.Linq;
 
 
 namespace RareServer.ApiCalls
@@ -23,9 +22,9 @@ namespace RareServer.ApiCalls
                 return Results.Ok(user);
             });
 
-            app.MapGet("/posts/{id}/comments", (int idOfPost) => //show comments of a specific post
+            app.MapGet("/posts/{postId}/comments", (int postId) => //show comments of a specific post
             {
-               List<Comments> postsComments = CommentList.comments.Where(c => c.PostId == idOfPost).ToList();
+               List<Comments> postsComments = CommentList.comments.Where(c => c.PostId == postId).ToList();
                 if (postsComments == null)
                 {
                     return Results.NotFound("This post has no comments on it yet.");
@@ -33,9 +32,9 @@ namespace RareServer.ApiCalls
                 return Results.Ok(postsComments);
             });
 
-            app.MapDelete("/posts/{id}/comments", (int idOfComment) => //delete a comment from a post
+            app.MapDelete("/posts/{postId}/comments/{id}", (int id) => //delete a comment from a post
             {
-                Comments commentToDelete = CommentList.comments.Where(c => c.Id == idOfComment).FirstOrDefault();
+                Comments commentToDelete = CommentList.comments.Where(c => c.Id == id).FirstOrDefault();
                 if(commentToDelete == null)
                 {
                     return Results.NotFound("There was an issue deleting this comment.");
@@ -48,26 +47,26 @@ namespace RareServer.ApiCalls
             {
                 try
                 {
-                if (CommentList.comments == null) 
-                {
-                    comment.Id = 1;
-                    CommentList.comments.Add(comment);
-                    return Results.Ok(comment);
-                }
-                else 
-                {
-                    comment.Id = CommentList.comments.Count + 1;
-                    CommentList.comments.Add(comment);
-                    return Results.Ok(comment);
-                }
+                    if (CommentList.comments == null) 
+                    {
+                        comment.Id = 1;
+                        CommentList.comments.Add(comment);
+                        return Results.Ok(comment);
+                    }
+                    else
+                    {
+                        comment.Id = CommentList.comments.Max(c => c.Id) + 1; 
+                        CommentList.comments.Add(comment);
+                        return Results.Ok(comment);
+                    }
                 }
                 catch (Exception)
-                {
-                   
+                { 
                     return Results.NotFound("Something went wrong, please try again.");
                 }
-                
             });
+       
+                
 
             app.MapPut("posts/{id}/comments", (int authorId, Comments updatedComment) => //edit a comment
             {
