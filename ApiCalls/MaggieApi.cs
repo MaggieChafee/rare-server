@@ -10,13 +10,16 @@ namespace RareServer.ApiCalls
             // getAllTags
             app.MapGet("/tags", () =>
             {
-                List<Tag> alphabetizedTags = new();
-                alphabetizedTags = TagsData.tags.OrderBy(t => t.Label).ToList();
+                List<Tag> alphabetizedTags = TagsData.tags.OrderBy(t => t.Label).ToList();
+                if (alphabetizedTags == null)
+                {
+                    return Results.NotFound();
+                }
                 return Results.Ok(alphabetizedTags);
             });
 
             // getAllPostsTags - get tags associate with a post
-            app.MapGet("/posts/{id}/tags", (int postId) =>
+            app.MapGet("/posts/{postId}/tags", (int postId) =>
             {
                 Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
                 if (singlePost == null) 
@@ -24,20 +27,21 @@ namespace RareServer.ApiCalls
                     return Results.NotFound();
                 }
                 List<PostTags> getPostTags = PostTagsData.postTags.Where(pt => pt.PostId == singlePost.Id).ToList();
-                List<int> tagIds = getPostTags.Select(pt => pt.TagId).ToList();
-                return Results.Ok(tagIds);
-                
+                List<int> tagId = getPostTags.Select(pt => pt.TagId).ToList();
+                List<Tag> labels = TagsData.tags.Where(t => tagId.Contains(t.Id)).ToList();
+                return Results.Ok(labels);
             });
 
             // updateTag
             app.MapPut("/tags/{id}", (int id, Tag updateTag) =>
             {
                 Tag tagToUpdate = TagsData.tags.FirstOrDefault(t => t.Id == id);
+                int tagIndex = TagsData.tags.IndexOf(tagToUpdate);
                 if (tagToUpdate == null) 
                 { 
                     return Results.NotFound();
                 }
-                return Results.Ok(tagToUpdate);
+                return Results.Ok(TagsData.tags[tagIndex]);
             });
 
             // createTag

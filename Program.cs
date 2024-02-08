@@ -24,6 +24,7 @@ app.MapControllers();
 
 GregApi.Map(app);
 RyanApi.Map(app);
+JoeyApi.Map(app);
 MaggieApi.Map(app);
 
 app.Run();
