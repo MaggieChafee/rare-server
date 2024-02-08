@@ -10,15 +10,40 @@ namespace RareServer.ApiCalls
             // getAllTags
             app.MapGet("/tags", () =>
             {
-                return Results.Ok(TagsData.tags);
+                List<Tag> alphabetizedTags = new();
+                alphabetizedTags = TagsData.tags.OrderBy(t => t.Label).ToList();
+                return Results.Ok(alphabetizedTags);
             });
 
-            // getAllPostsTags
+            // getAllPostsTags - get tags associate with a post
+            app.MapGet("/posts/{postId}/tags", (int postId, Posts post) =>
+            {
+                Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
+                if (singlePost == null) 
+                {
+                    return Results.NotFound();
+                }
+                List<PostTags> getPostTags = PostTagsData.postTags.Where(pt => pt.PostId == singlePost.Id).ToList();
+                List<int> tagIds = getPostTags.Select(pt => pt.TagId).ToList();
+                List<Tag> labels = TagsData.tags.Where(t => t.Contains(t.Id)).ToList();
+                
+            });
+
             // updateTag
+            app.MapPut("/tags/{id}", (int id, Tag updateTag) =>
+            {
+                Tag tagToUpdate = TagsData.tags.FirstOrDefault(t => t.Id == id);
+                if (tagToUpdate == null) 
+                { 
+                    return Results.NotFound();
+                }
+                return Results.Ok(tagToUpdate);
+            });
+
             // createTag
             app.MapPost("/tags", (Tag newTag) =>
             {
-                newTag.Id = TagsData.tags.Count + 1;
+                newTag.Id = TagsData.tags.Max(t => t.Id) + 1;
                 TagsData.tags.Add(newTag);
                 return Results.Ok(newTag);
             });

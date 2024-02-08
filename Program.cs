@@ -11,6 +11,27 @@ List<Tag> tags = new List<Tag>
     new Tag { Id = 4, Label = "Fiction & Poetry"},
     new Tag { Id = 5, Label = "Humor & Cartoons"}
 };
+List<PostTags> postTags = new()
+{
+    new PostTags
+            {
+                Id = 1,
+                TagId = 1,
+                PostId = 1,
+            },
+            new PostTags
+            {
+                Id = 2,
+                TagId = 4,
+                PostId = 1,
+            },
+            new PostTags
+            {
+                Id = 3,
+                TagId = 3,
+                PostId = 2,
+            }
+        };
 
 // Add services to the container.
 
@@ -34,6 +55,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
+
 MaggieApi.Map(app);
 
+GregApi.Map(app);
 app.Run();
