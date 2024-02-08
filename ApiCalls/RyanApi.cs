@@ -36,6 +36,20 @@ namespace RareServer.ApiCalls
             });
 
             // Categories API Calls
+            app.MapGet("/categories", () =>
+            {
+                return Category.categories;
+            });
+
+            app.MapGet("/categories/{id}", () =>
+            {
+
+            });
+
+            app.MapPost("/categories", () =>
+            {
+
+            });
         }
     }
 }
