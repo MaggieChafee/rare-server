@@ -16,7 +16,7 @@ namespace RareServer.ApiCalls
             });
 
             // getAllPostsTags - get tags associate with a post
-            app.MapGet("/posts/{postId}/tags", (int postId, Posts post) =>
+            app.MapGet("/posts/{id}/tags", (int postId) =>
             {
                 Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
                 if (singlePost == null) 
@@ -25,7 +25,7 @@ namespace RareServer.ApiCalls
                 }
                 List<PostTags> getPostTags = PostTagsData.postTags.Where(pt => pt.PostId == singlePost.Id).ToList();
                 List<int> tagIds = getPostTags.Select(pt => pt.TagId).ToList();
-                List<Tag> labels = TagsData.tags.Where(t => t.Contains(t.Id)).ToList();
+                return Results.Ok(tagIds);
                 
             });
 
