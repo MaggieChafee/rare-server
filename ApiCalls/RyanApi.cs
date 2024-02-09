@@ -38,17 +38,21 @@ namespace RareServer.ApiCalls
             // Categories API Calls
             app.MapGet("/categories", () =>
             {
-                return Category.categories;
+                return Results.Ok(Category.category);
             });
 
-            app.MapGet("/categories/{id}", () =>
+            app.MapGet("/categories/{id}", (int id) =>
             {
+                var categoriesById = Category.category.Where(c => c.Id == id).ToList();
 
+                return Results.Ok(categoriesById);
             });
 
-            app.MapPost("/categories", () =>
+            app.MapPost("/categories", (Categories category) =>
             {
+                var categoryAdd = Category.category.Max(c => c.Id) + 1;
 
+                return Results.Ok(categoryAdd);
             });
         }
     }

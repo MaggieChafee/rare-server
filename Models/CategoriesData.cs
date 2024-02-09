@@ -2,7 +2,7 @@ namespace RareServer.Models
 {
     public class Category
     {
-        public static List<Categories> categories = new()
+        public static List<Categories> category = new()
         {
             new Categories()
             {
