@@ -78,21 +78,6 @@ namespace RareServer.ApiCalls
                 return Results.Ok();
             });
 
-            // getPostsByTag - filter posts by tags
-            // post/search/tags
-            app.MapGet("/posts/filterBy/tags/{id}", (int postId) =>
-            {
-                Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
-                if (singlePost == null)
-                {
-                    return Results.NotFound();
-                }
-                List<PostTags> getPostTags = PostTagsData.postTags.Where(pt => pt.PostId == singlePost.Id).ToList();
-                List<int> tagId = getPostTags.Select(pt => pt.TagId).ToList();
-                List<Tag> labels = TagsData.tags.Where(t => tagId.Contains(t.Id)).ToList();
-                return Results.Ok(labels);
-            });
-
             // --------- POST TAGS -----------
             // getPostTagsByPostId(include getPostByPostId and getUserByUserId)
             app.MapGet("/posts/{postId}/postTags", (int postId) =>
