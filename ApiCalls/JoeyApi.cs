@@ -75,6 +75,52 @@ namespace RareServer.ApiCalls
                 PostReactionsData.postReactions.Remove(pReact);
                 return Results.NoContent();
             });
+
+            //getAllPosts
+            app.MapGet("/posts", () =>
+            {
+                return PostData.posts;
+            });
+
+            //getUsersPosts - userId
+            app.MapGet("/posts/user/{id}", (int id) =>
+            {
+                List<Posts> userPostList = PostData.posts.Where(p => p.UserId == id).ToList();
+                if (userPostList == null)
+                {
+                    return Results.NotFound();
+                }
+
+                return Results.Ok(userPostList);
+
+            });
+
+            //deletePost - postId
+            app.MapDelete("/posts/delete/{id}", (int id) =>
+            {
+                Posts deletePost = PostData.posts.FirstOrDefault(p => p.Id == id);
+                if (deletePost == null)
+                {
+                    return Results.NotFound();
+                }
+
+                PostData.posts.Remove(deletePost);
+                return Results.NoContent();
+            });
+
+            //search by post title
+
+            app.MapGet("/posts/search/{title}", (string title) =>
+            {
+
+                List<Posts> resultList = PostData.posts.Where(p => p.Title.ToLower().Contains(title.ToLower().Trim())).ToList();
+                if (resultList == null)
+                {
+                    return Results.NoContent();
+                }
+
+                return Results.Ok(resultList);
+            });
         }
     }
 }

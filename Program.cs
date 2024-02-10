@@ -31,5 +31,9 @@ GregApi.Map(app);
 RyanApi.Map(app);
 JoeyApi.Map(app);
 MaggieApi.Map(app);
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
 
 app.Run();
