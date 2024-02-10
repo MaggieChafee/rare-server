@@ -22,6 +22,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+
 GregApi.Map(app);
 RyanApi.Map(app);
 JoeyApi.Map(app);

@@ -19,6 +19,17 @@ namespace RareServer.ApiCalls
                 return Results.Ok(alphabetizedTags);
             });
 
+            //getSingleTag
+            app.MapGet("/tags/{id}", (int id) =>
+            {
+                Tag singleTag = TagsData.tags.FirstOrDefault(t => t.Id == id);
+                if (singleTag == null)
+                {
+                    return Results.NotFound();
+                }
+                return Results.Ok(singleTag);
+            });
+
             // getAllPostsTags - gets all tags associated with a post
             app.MapGet("/posts/{postId}/tags", (int postId) =>
             {
@@ -34,15 +45,16 @@ namespace RareServer.ApiCalls
             });
 
             // updateTag
-            app.MapPut("/tags/{id}", (int id, Tag updateTag) =>
+            app.MapPut("/tags/{id}", (int id, Tag tag) =>
             {
                 Tag tagToUpdate = TagsData.tags.FirstOrDefault(t => t.Id == id);
                 int tagIndex = TagsData.tags.IndexOf(tagToUpdate);
-                if (tagToUpdate == null) 
-                { 
+                if (tagToUpdate == null)
+                {
                     return Results.NotFound();
                 }
-                return Results.Ok(TagsData.tags[tagIndex]);
+                TagsData.tags[tagIndex].Label = tag.Label;
+                return Results.Ok(TagsData.tags[tagIndex].Label = tagToUpdate.Label);
             });
 
             // createTag
@@ -129,7 +141,31 @@ namespace RareServer.ApiCalls
                 {
                     return Results.NotFound();
                 }
-                return Results.Ok(PostTagsData.postTags[pTagIndex]);
+                return Results.Ok(PostTagsData.postTags[pTagIndex].TagId = updatePostTag.TagId);
+            });
+
+            // updatePost(PUT)
+            app.MapPut("/posts/{postId}", (int postId, Posts newPost) =>
+            {
+                Posts postToUpdate = PostsData.posts.FirstOrDefault(t => t.Id == postId);
+                int postIndex = PostsData.posts.IndexOf(postToUpdate);
+                if (postToUpdate == null)
+                {
+                    return Results.NotFound();
+                }
+                return Results.Ok(PostsData.posts[postIndex] = newPost);
+            });
+
+            // getAllPosts
+            app.MapGet("/posts", () =>
+            {
+                List<Posts> allPosts = PostsData.posts.ToList();
+                if (allPosts == null)
+                {
+                    return Results.NotFound();
+                }
+                return Results.Ok(allPosts);
+
             });
         }
     }
