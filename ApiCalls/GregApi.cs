@@ -1,4 +1,5 @@
 ﻿using RareServer.Models;
+using System.Xml.Linq;
 
 
 namespace RareServer.ApiCalls
@@ -68,7 +69,7 @@ namespace RareServer.ApiCalls
        
                 
 
-            app.MapPut("posts/{id}/comments", (int authorId, Comments updatedComment) => //edit a comment
+            app.MapPut("/posts/{id}/comments", (int authorId, Comments updatedComment) => //edit a comment
             {
                 Comments commentToUpdate = CommentList.comments.FirstOrDefault(c => c.Id == authorId);
 
@@ -82,12 +83,37 @@ namespace RareServer.ApiCalls
 
             });
 
-            app.MapGet("posts/{id}", (int id) =>
+            app.MapGet("/posts/{id}", (int id) =>
             {
                 Posts selectedPost = PostData.posts.FirstOrDefault(p => p.Id == id);
                 return selectedPost;
             });
 
+            app.MapPost("/posts", (Posts post) =>
+            {
+                try
+                {
+                    if (PostData.posts == null)
+                    {
+                        post.Id = 1;
+                        post.PublicationDate = DateTime.Now;
+                        PostData.posts.Add(post);
+                        return Results.Ok(post);
+                    }
+                    else
+                    {
+                        post.Id = CommentList.comments.Max(p => p.Id) + 1;
+                        post.PublicationDate = DateTime.Now;
+                        PostData.posts.Add(post);
+                        return Results.Ok(post);
+                    }
+                }
+                catch (Exception)
+                {
+                    return Results.NotFound("Something went wrong, please try again.");
+                }
+            });
+         
 
         }
     }
