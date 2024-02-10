@@ -9,6 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+// add CORS here
+// extra line: .AllowAnyHeader().AllowAnyMethod();
 
 if (app.Environment.IsDevelopment())
 {
@@ -17,6 +19,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// app UseCors('enter variable name here");
 
 app.UseAuthorization();
 
