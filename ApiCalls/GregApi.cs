@@ -82,6 +82,11 @@ namespace RareServer.ApiCalls
 
             });
 
+            app.MapGet("posts/{id}", (int id) =>
+            {
+                Posts selectedPost = PostData.posts.FirstOrDefault(p => p.Id == id);
+                return selectedPost;
+            });
 
 
         }
