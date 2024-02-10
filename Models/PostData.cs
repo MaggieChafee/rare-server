@@ -4,7 +4,7 @@
     {
         public static List<Posts> posts = new()
         {
-            new Posts
+            new Post
             {
                 Id = 1,
                 UserId = 1,
@@ -62,5 +62,6 @@
         };
     }
 }
+
 
 
