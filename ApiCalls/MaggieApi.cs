@@ -34,7 +34,7 @@ namespace RareServer.ApiCalls
             // getAllPostsTags - gets all tags associated with a post
             app.MapGet("/posts/{postId}/tags", (int postId) =>
             {
-                Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
+                Posts singlePost = PostData.posts.FirstOrDefault(post => post.Id == postId);
                 if (singlePost == null) 
                 {
                     return Results.NotFound();
@@ -82,7 +82,7 @@ namespace RareServer.ApiCalls
             // getPostTagsByPostId(include getPostByPostId and getUserByUserId)
             app.MapGet("/posts/{postId}/postTags", (int postId) =>
             {
-                Posts singlePost = PostsData.posts.FirstOrDefault(post => post.Id == postId);
+                Posts singlePost = PostData.posts.FirstOrDefault(post => post.Id == postId);
                 if (singlePost == null)
                 {
                     return Results.NotFound();
@@ -150,13 +150,13 @@ namespace RareServer.ApiCalls
             // updatePost(PUT)
             app.MapPut("/posts/{postId}", (int postId, Posts newPost) =>
             {
-                Posts postToUpdate = PostsData.posts.FirstOrDefault(t => t.Id == postId);
-                int postIndex = PostsData.posts.IndexOf(postToUpdate);
+                Posts postToUpdate = PostData.posts.FirstOrDefault(t => t.Id == postId);
+                int postIndex = PostData.posts.IndexOf(postToUpdate);
                 if (postToUpdate == null)
                 {
                     return Results.NotFound();
                 }
-                return Results.Ok(PostsData.posts[postIndex] = newPost);
+                return Results.Ok(PostData.posts[postIndex] = newPost);
             });
         }
     }
