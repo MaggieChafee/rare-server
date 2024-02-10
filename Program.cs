@@ -1,4 +1,5 @@
 using RareServer.ApiCalls;
+using RareServer.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+// add CORS here
+// extra line: .AllowAnyHeader().AllowAnyMethod();
 
 if (app.Environment.IsDevelopment())
 {
@@ -17,9 +20,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// app UseCors('enter variable name here");
+
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 GregApi.Map(app);
 RyanApi.Map(app);
